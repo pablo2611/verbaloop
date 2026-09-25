@@ -59,6 +59,10 @@ export type AIChatBoxProps = {
   suggestedPrompts?: string[];
   /** Accessible text for the send button. */
   sendButtonLabel?: string;
+  /** Accessible text for the message field. */
+  inputLabel?: string;
+  /** Focus the input when this chat mounts. */
+  autoFocusInput?: boolean;
 };
 
 /**
@@ -122,6 +126,8 @@ export function AIChatBox({
   emptyStateMessage = "Start a conversation with AI",
   suggestedPrompts,
   sendButtonLabel = "Send message",
+  inputLabel = "Message",
+  autoFocusInput = false,
 }: AIChatBoxProps) {
   const [input, setInput] = useState("");
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -152,8 +158,12 @@ export function AIChatBox({
     }
   }, []);
 
+  useEffect(() => {
+    if (messages.length > 0 || isLoading) scrollToBottom();
+  }, [messages, isLoading]);
+
   // Scroll to bottom helper function with smooth animation
-  const scrollToBottom = () => {
+  function scrollToBottom() {
     const viewport = scrollAreaRef.current?.querySelector(
       '[data-radix-scroll-area-viewport]'
     ) as HTMLDivElement;
@@ -166,7 +176,7 @@ export function AIChatBox({
         });
       });
     }
-  };
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,7 +210,7 @@ export function AIChatBox({
       style={{ height }}
     >
       {/* Messages Area */}
-      <div ref={scrollAreaRef} className="flex-1 overflow-hidden">
+        <div ref={scrollAreaRef} className="flex-1 overflow-hidden" aria-live="polite" aria-relevant="additions text">
         {displayMessages.length === 0 ? (
           <div className="flex h-full flex-col p-4">
             <div className="flex flex-1 flex-col items-center justify-center gap-6 text-muted-foreground">
@@ -309,10 +319,12 @@ export function AIChatBox({
       <form
         ref={inputAreaRef}
         onSubmit={handleSubmit}
-        className="flex gap-2 p-4 border-t bg-background/50 items-end"
+          className="flex gap-2 p-4 border-t bg-background/50 items-end"
       >
         <Textarea
           ref={textareaRef}
+          aria-label={inputLabel}
+          autoFocus={autoFocusInput}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}

@@ -23,6 +23,15 @@ describe("VerbaLoop bilingual content", () => {
     expect(detectLanguage("?lang=en")).toBe("en");
   });
 
+  it("provides clear first-step instructions and more bilingual industrial terms", () => {
+    expect(translate("es", "guideShuffleText")).toContain("fichas");
+    expect(translate("en", "guideShuffleText")).toContain("tiles");
+    expect(sampleTerms.es.length).toBeGreaterThanOrEqual(12);
+    expect(sampleTerms.en.length).toBe(sampleTerms.es.length);
+    expect(sampleTerms.es.some((term) => term.word === "Mantenimiento preventivo")).toBe(true);
+    expect(sampleTerms.en.some((term) => term.word === "Preventive maintenance")).toBe(true);
+  });
+
   it.each(["es", "en"] as const)("provides answer-consistent daily games for %s", (language) => {
     const levels = Object.keys(dailyChallenges[language]) as (keyof typeof dailyChallenges.es)[];
     for (const level of levels) {

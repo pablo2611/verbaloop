@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { VerbaGuide } from "@/components/VerbaGuide";
+import { MiniLessonCard } from "@/components/MiniLessonCard";
 import { dailyChallenges, detectLanguage, matchChoices, sampleTerms, translate, type GlossaryTerm, type Language, type TranslationKey } from "@/lib/i18n";
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, BookOpen, Check, CheckCircle2, ChevronDown,
@@ -84,6 +85,8 @@ export default function Home() {
   const [toast, setToast] = useState("");
   const [mobileMenu, setMobileMenu] = useState(false);
   const glossarySearchRef = useRef<HTMLInputElement>(null);
+  const [howOpen, setHowOpen] = useState(false);
+  const howCloseRef = useRef<HTMLButtonElement>(null);
 
   const daily = dailyChallenges[language][difficulty];
   const starterTerms = sampleTerms[language];
@@ -119,6 +122,9 @@ export default function Home() {
   useEffect(() => {
     if (searchOpen && section === "glossary") glossarySearchRef.current?.focus();
   }, [searchOpen, section]);
+  useEffect(() => {
+    if (howOpen) howCloseRef.current?.focus();
+  }, [howOpen]);
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
@@ -203,7 +209,7 @@ export default function Home() {
         <div className="nav-label">{t("routines").toLocaleUpperCase(language)}</div>
         <div className="routine-card"><span className="routine-icon"><Flame size={16} /></span><span><strong>{t("dailyStreak")}</strong><small>{progress.streak} {t("daysInRow")}</small></span><ArrowUpRight size={14} className="routine-arrow" /></div>
         <div className="sidebar-bottom">
-          <div className="help-card"><div className="help-orbit orbit-one"/><div className="help-orbit orbit-two"/><CircleHelp size={19} /><strong>{t("firstLap")}</strong><p>{t("oneWordADay")}</p><button onClick={() => setToast(t("tipToast"))}>{t("seeHowItWorks")} <ArrowRight size={13} /></button></div>
+          <div className="help-card"><div className="help-orbit orbit-one"/><div className="help-orbit orbit-two"/><CircleHelp size={19} /><strong>{t("firstLap")}</strong><p>{t("oneWordADay")}</p><button onClick={() => setHowOpen(true)}>{t("seeHowItWorks")} <ArrowRight size={13} /></button></div>
           <button className="profile-row" onClick={() => setToast(t("localProgress"))}><Avatar initials="AM" color="peach" /><span><strong>Alex Morgan</strong><small>{t("productSpecialist")}</small></span><Settings2 size={17} /></button>
           <div className="sidebar-note">{t("madeToLearn")} <span>✳</span></div>
         </div>
@@ -261,6 +267,7 @@ export default function Home() {
                     <div className="game-footer"><button className="hint-button" onClick={() => setHintVisible((value) => !value)} disabled={complete || revealed}><Lightbulb size={16}/>{hintVisible ? t("hideHint") : t("giveHint")}<span className="hint-cost">{t("free")}</span></button><div className="game-footer-actions">{!complete && !revealed ? <><button className="reveal-button" onClick={revealAnswer}><span>{t("seeAnswer")}</span></button><button className="check-button" onClick={solveRound}>{t("check")} <ArrowRight size={15}/></button></> : <button className="check-button next-button" onClick={showNewDailyChallenge}>{complete ? t("nextChallenge") : t("tryAnother")}<ArrowRight size={15}/></button>}</div></div>
                   </div>
 
+                  <MiniLessonCard language={language} term={activeTerm.word} definition={activeTerm.definition} difficulty={difficulty} />
                   <div className="bottom-grid">
                     <section className="week-card"><div className="card-title-row"><div><span className="section-kicker">{t("consistency")}</span><h3>{t("weeklyRhythm")}</h3></div><button className="small-more" onClick={() => setSection("teams")}>{t("viewProgress")} <ArrowRight size={13}/></button></div><div className="week-bars" aria-label={t("weeklyProgress")}>{[{height:30,done:true},{height:58,done:true},{height:44,done:true},{height:70,today:true},{height:20},{height:20},{height:20}].map((day,i)=><div className="week-day" key={i}><span className={`week-bar ${day.done?"bar-done":""} ${day.today?"bar-today":""}`} style={{height:`${day.height}px`}}>{day.today&&<span className="bar-spark">✳</span>}</span><small className={day.today?"today-label":""}>{weekDays[i]}</small></div>)}</div><div className="week-foot"><span>{t("activeDays", { count: 4 })}</span><span className="week-leg"><i/> {t("dailyGoal")}</span></div></section>
                     <section className="glossary-preview"><div className="card-title-row"><div><span className="section-kicker">{t("vocabulary")}</span><h3>{t("fromGlossary")}</h3></div><button className="circle-arrow" onClick={() => setSection("glossary")} aria-label={t("openGlossary")}><ArrowRight size={16}/></button></div>{starterTerms.slice(1, 3).map((term, index)=><div className="preview-word" key={term.word}><span className="word-index">0{index + 1}</span><span><strong>{term.word}</strong><small>{term.category}</small></span><span className="word-chip">{t("lettersCount", { count: term.word.replace(/\s/g, "").length })}</span></div>)}<button className="create-puzzle-link" onClick={() => setSection("glossary")}><Plus size={14}/> {t("createFromGlossary")}</button></section>
@@ -293,6 +300,21 @@ export default function Home() {
           <footer className="page-footer"><Logo/><span>{t("footerTagline")}</span><span>{t("footerMadeBy", { year: new Date().getFullYear() })}</span></footer>
         </div>
       </main>
+      {howOpen && (
+        <div className="quick-guide-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setHowOpen(false); }} onKeyDown={(event) => { if (event.key === "Escape") setHowOpen(false); }}>
+          <section className="quick-guide-dialog" role="dialog" aria-modal="true" aria-labelledby="quick-guide-title">
+            <header className="quick-guide-heading"><span className="mini-lesson-icon"><BookOpen size={18} /></span><div><span className="section-kicker">VERBALOOP · 01</span><h2 id="quick-guide-title">{t("guideTitle")}</h2><p>{t("guideIntro")}</p></div><button ref={howCloseRef} className="verba-guide-close" type="button" aria-label={t("guideClose")} onClick={() => setHowOpen(false)}><X size={18}/></button></header>
+            <div className="quick-guide-steps">
+              <article><span className="quick-guide-number">01</span><div><h3>{t("guideShuffleTitle")}</h3><p>{t("guideShuffleText")}</p></div></article>
+              <article><span className="quick-guide-number">02</span><div><h3>{t("guideMatchTitle")}</h3><p>{t("guideMatchText")}</p></div></article>
+              <article><span className="quick-guide-number">03</span><div><h3>{t("guideFillTitle")}</h3><p>{t("guideFillText")}</p></div></article>
+              <article><span className="quick-guide-number">04</span><div><h3>{t("guideStepTitle")}</h3><p>{t("guideStepText")}</p></div></article>
+              <article><span className="quick-guide-number"><Lightbulb size={15}/></span><div><h3>{t("guideHintTitle")}</h3><p>{t("guideHintText")}</p></div></article>
+            </div>
+            <button className="quick-guide-start" type="button" onClick={() => setHowOpen(false)}>{t("check")} <ArrowRight size={15}/></button>
+          </section>
+        </div>
+      )}
       {toast && <div className="toast-message" role="status"><span className="toast-mark"><Check size={14}/></span>{toast}<button onClick={()=>setToast("")} aria-label={t("closeMenu")}><X size={14}/></button></div>}
       <VerbaGuide context={guideContext} language={language} />
     </div>

@@ -12,7 +12,8 @@ VerbaLoop is a lightweight, gamified practice space that helps teams get comfort
 
 - Solve three kinds of daily puzzle: **Unscramble**, **Definitions**, and **Fill in**.
 - Choose **Beginner**, **Intermediate**, or **Expert** difficulty.
-- Ask Vera for a hint or basic help using VerbaLoop.
+- Ask Vera for a gentle hint, a simple workplace example, or help using the page.
+- Create a personalized mini-lesson from the active glossary term, with an example, a three-choice quiz, and a short explanation.
 - Browse the sample glossary or add your team's terms, definitions, and optional categories.
 - Turn a glossary entry into a practice challenge.
 - Track sample XP, streaks, weekly activity, and team rankings.
@@ -21,10 +22,11 @@ VerbaLoop is a lightweight, gamified practice space that helps teams get comfort
 ### How to use it
 
 1. Pick a puzzle type and difficulty.
-2. Solve the daily term, ask for a hint, or reveal the answer.
-3. Open **My glossary** to add or practice team vocabulary.
-4. Visit **Leaderboard** to explore the sample team progress.
-5. Choose **EN** or **ES** at the top to change the interface language.
+2. Solve the daily term, ask Vera for a hint or example, or reveal the answer.
+3. Create a mini-lesson to practice the active term with a short example and quiz.
+4. Open **My glossary** to add or practice team vocabulary.
+5. Visit **Leaderboard** to explore the sample team progress.
+6. Choose **EN** or **ES** at the top to change the interface language.
 
 ### Privacy and storage
 
@@ -58,7 +60,8 @@ VerbaLoop es un espacio de práctica ligero y gamificado que ayuda a los equipos
 
 - Resolver tres tipos de acertijo diario: **Revuelto**, **Definiciones** y **Completa**.
 - Elegir la dificultad **Principiante**, **Intermedio** o **Experto**.
-- Pedirle a Vera una pista o ayuda básica para utilizar VerbaLoop.
+- Pedirle a Vera una pista, un ejemplo laboral sencillo o ayuda para utilizar la página.
+- Crear una microlección personalizada a partir del término activo: ejemplo, quiz de tres opciones y explicación breve.
 - Explorar el glosario de muestra o añadir términos, definiciones y categorías opcionales de tu equipo.
 - Convertir cualquier término del glosario en un reto de práctica.
 - Consultar XP, rachas, actividad semanal y clasificación de equipos de muestra.
@@ -67,10 +70,11 @@ VerbaLoop es un espacio de práctica ligero y gamificado que ayuda a los equipos
 ### Cómo usarlo
 
 1. Elige el tipo de acertijo y la dificultad.
-2. Resuelve el término diario, pide una pista o revela la respuesta.
-3. Abre **Mi glosario** para añadir o practicar vocabulario del equipo.
-4. Visita **Clasificación** para explorar el progreso de muestra de los equipos.
-5. Elige **EN** o **ES** en la parte superior para cambiar el idioma de la interfaz.
+2. Resuelve el término diario, pídele una pista o un ejemplo a Vera, o revela la respuesta.
+3. Crea una microlección para practicar el término activo con un ejemplo y un quiz corto.
+4. Abre **Mi glosario** para añadir o practicar vocabulario del equipo.
+5. Visita **Clasificación** para explorar el progreso de muestra de los equipos.
+6. Elige **EN** o **ES** en la parte superior para cambiar el idioma de la interfaz.
 
 ### Privacidad y almacenamiento
 
