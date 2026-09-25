@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { VerbaGuide } from "@/components/VerbaGuide";
 import {
   ArrowDownRight,
   ArrowRight,
@@ -107,9 +108,9 @@ function Logo() {
   return (
     <div className="brand-lockup">
       <div className="brand-mark" aria-hidden="true">
-        <span>L</span><i /><b />
+        <span>V</span><i /><b />
       </div>
-      <span className="brand-name">lexi<span>loops</span><sup>®</sup></span>
+      <span className="brand-name">verba<span>loop</span><sup>®</sup></span>
     </div>
   );
 }
@@ -142,6 +143,12 @@ export default function Home() {
 
   const daily = dailyByDifficulty[difficulty];
   const activeTerm = customTerm || daily.term;
+  const guideContext = {
+    term: activeTerm.word,
+    definition: activeTerm.definition,
+    mode: gameType === "shuffle" ? "Revuelto" as const : gameType === "match" ? "Definiciones" as const : "Completa" as const,
+    difficulty,
+  };
   const today = new Date().toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" });
   const filteredTerms = useMemo(() => terms.filter((term) => `${term.word} ${term.definition} ${term.category}`.toLowerCase().includes(query.toLowerCase())), [terms, query]);
 
@@ -359,7 +366,7 @@ export default function Home() {
           {section === "glossary" && (
             <div className="secondary-page"><div className="secondary-heading"><div><div className="eyebrow"><span className="eyebrow-line"/> TU ESPACIO DE APRENDIZAJE</div><h1>Tu glosario,<br/><em>hecho juego.</em></h1><p>Guarda la terminología de tu equipo y conviértela en práctica que se queda.</p></div><div className="glossary-count-card"><BookOpen size={20}/><strong>{terms.length}</strong><span>términos<br/>en tu biblioteca</span></div></div>
               <div className="glossary-layout"><section className="glossary-main"><div className="glossary-toolbar"><div><h2>Biblioteca de términos</h2><span>{filteredTerms.length} palabras listas para aprender</span></div><div className="glossary-search"><Search size={15}/><input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="Buscar un término..." aria-label="Buscar término"/>{query&&<button onClick={()=>setQuery("")} aria-label="Limpiar"><X size={14}/></button>}</div></div><div className="term-list">{filteredTerms.map((term,i)=><article className="term-row" key={`${term.word}-${i}`}><div className={`term-letter tile-tone-${i%5}`}>{term.word[0].toUpperCase()}</div><div className="term-content"><div className="term-title-line"><h3>{term.word}</h3><span className="term-category">{term.category}</span></div><p>{term.definition}</p></div><button className="practice-term" onClick={()=>playCustomTerm(term)}><Shuffle size={14}/> Practicar</button></article>)}{filteredTerms.length===0&&<div className="no-results">No encontramos ese término. Añádelo a tu glosario y crea un reto.</div>}</div></section>
-                <aside className="glossary-side"><div className="add-term-card"><div className="add-card-icon"><Plus size={18}/></div><h3>Tu vocabulario, tus reglas.</h3><p>Convierte la jerga de tu equipo en un pequeño reto diario.</p><form onSubmit={addGlossaryTerm}><label htmlFor="new-word">TÉRMINO</label><input id="new-word" value={customWord} onChange={(e)=>setCustomWord(e.target.value)} placeholder="Ej. Ciclo de vida"/><label htmlFor="new-definition">DEFINICIÓN</label><textarea id="new-definition" value={customDefinition} onChange={(e)=>setCustomDefinition(e.target.value)} placeholder="¿Qué significa para tu equipo?" rows={3}/><label htmlFor="new-category">CATEGORÍA <span>(OPCIONAL)</span></label><input id="new-category" value={customCategory} onChange={(e)=>setCustomCategory(e.target.value)} placeholder="Ej. Producto"/><button className="add-term-button" type="submit"><Plus size={15}/> Añadir término</button></form><div className="privacy-note"><LockKeyhole size={13}/> Tu glosario solo se guarda aquí.</div></div><div className="how-it-works"><span className="section-kicker">UN CICLO SENCILLO</span><div className="loop-step"><span>01</span><p><strong>Añade</strong> una palabra de tu equipo.</p></div><div className="loop-connector"/><div className="loop-step"><span>02</span><p><strong>Practica</strong> con un reto de letras.</p></div><div className="loop-connector"/><div className="loop-step"><span>03</span><p><strong>Recuérdala</strong> cuando la necesites.</p></div></div></aside></div>
+                <aside className="glossary-side"><div className="add-term-card"><div className="add-card-icon"><Plus size={18}/></div><h3>Tu vocabulario, tus reglas.</h3><p>Convierte la jerga de tu equipo en un pequeño reto diario.</p><form onSubmit={addGlossaryTerm}><label htmlFor="new-word">TÉRMINO</label><input id="new-word" value={customWord} onChange={(e)=>setCustomWord(e.target.value)} placeholder="Ej. Ciclo de vida"/><label htmlFor="new-definition">DEFINICIÓN</label><textarea id="new-definition" value={customDefinition} onChange={(e)=>setCustomDefinition(e.target.value)} placeholder="¿Qué significa para tu equipo?" rows={3}/><label htmlFor="new-category">CATEGORÍA <span>(OPCIONAL)</span></label><input id="new-category" value={customCategory} onChange={(e)=>setCustomCategory(e.target.value)} placeholder="Ej. Producto"/><button className="add-term-button" type="submit"><Plus size={15}/> Añadir término</button></form><div className="privacy-note"><LockKeyhole size={13}/> El glosario queda en este navegador; Vera envía el término activo si usas su chat.</div></div><div className="how-it-works"><span className="section-kicker">UN CICLO SENCILLO</span><div className="loop-step"><span>01</span><p><strong>Añade</strong> una palabra de tu equipo.</p></div><div className="loop-connector"/><div className="loop-step"><span>02</span><p><strong>Practica</strong> con un reto de letras.</p></div><div className="loop-connector"/><div className="loop-step"><span>03</span><p><strong>Recuérdala</strong> cuando la necesites.</p></div></div></aside></div>
             </div>
           )}
 
@@ -369,10 +376,11 @@ export default function Home() {
               <div className="leaderboard-full"><div className="full-leader-header"><div><span className="section-kicker">CLASIFICACIÓN GENERAL</span><h2>Las palabras se comparten.</h2></div><span className="week-pill"><span className="live-dot"/> Semana actual <ChevronDown size={13}/></span></div><div className="table-head"><span>PUESTO</span><span>EQUIPO</span><span>MIEMBROS</span><span>RACHA</span><span>PUNTOS</span></div>{[{rank:"01",team:"Strategy & Ops",initials:"SK",color:"blue",people:8,streak:"12.4 días",score:"2,840",trend:"up"},{rank:"02",team:"Tu progreso",initials:"AM",color:"peach",people:1,streak:`${progress.streak} días`,score:progress.xp.toLocaleString("es-MX"),trend:"up",you:true},{rank:"03",team:"Product Design",initials:"PD",color:"lilac",people:6,streak:"7.2 días",score:"1,920",trend:"up"},{rank:"04",team:"Customer Success",initials:"CS",color:"sage",people:11,streak:"5.8 días",score:"1,640",trend:"down"},{rank:"05",team:"Engineering",initials:"EN",color:"gold",people:14,streak:"4.1 días",score:"1,280",trend:"up"}].map((team)=><div className={`leader-table-row ${team.you?"leader-you":""}`} key={team.rank}><span className={`table-rank ${team.rank==="01"?"top-rank":""}`}>{team.rank==="01"?<Trophy size={15}/>:team.rank}</span><span className="table-team"><Avatar initials={team.initials} color={team.color} size="small"/><strong>{team.team}{team.you&&<i>ESTE ERES TÚ</i>}</strong></span><span className="table-muted">{team.people} personas</span><span className="table-streak"><Flame size={13}/>{team.streak}</span><span className="table-score">{team.score} XP {team.trend==="up"?<ArrowUpRight size={14}/>:<ArrowDownRight size={14}/>}</span></div>)}<div className="leaderboard-foot"><span>Los puntos se actualizan al completar un reto.</span><button onClick={()=>setToast("¡Vas muy bien! Tu actividad se refleja aquí.")}>¿Cómo se calculan los puntos? <CircleHelp size={14}/></button></div></div>
             </div>
           )}
-          <footer className="page-footer"><Logo/><span>Un bucle pequeño. Un vocabulario enorme.</span><span>© {new Date().getFullYear()} LexiLoops <span className="footer-sep">·</span> Hecho para aprender en equipo</span></footer>
+          <footer className="page-footer"><Logo/><span>Un bucle pequeño. Un vocabulario enorme.</span><span>© {new Date().getFullYear()} VerbaLoop <span className="footer-sep">·</span> Desarrollado por Pablo Sánchez</span></footer>
         </div>
       </main>
       {toast && <div className="toast-message" role="status"><span className="toast-mark"><Check size={14}/></span>{toast}<button onClick={()=>setToast("")} aria-label="Cerrar aviso"><X size={14}/></button></div>}
+      <VerbaGuide context={guideContext} />
     </div>
   );
 }
