@@ -57,6 +57,8 @@ export type AIChatBoxProps = {
    * Click to send directly
    */
   suggestedPrompts?: string[];
+  /** Accessible text for the send button. */
+  sendButtonLabel?: string;
 };
 
 /**
@@ -119,6 +121,7 @@ export function AIChatBox({
   height = "600px",
   emptyStateMessage = "Start a conversation with AI",
   suggestedPrompts,
+  sendButtonLabel = "Send message",
 }: AIChatBoxProps) {
   const [input, setInput] = useState("");
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -320,6 +323,7 @@ export function AIChatBox({
         <Button
           type="submit"
           size="icon"
+          aria-label={sendButtonLabel}
           disabled={!input.trim() || isLoading}
           className="shrink-0 h-[38px] w-[38px]"
         >

@@ -209,3 +209,12 @@ button { color: inherit; }
   .verba-guide-launcher { min-height: 46px; padding: 0 14px; }
 }
 @media (prefers-reduced-motion: reduce) { .verba-guide-panel { animation: none; } }
+
+
+/* Bilingual language switch */
+.language-switch { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid #e8e7df; border-radius: 7px; background: #fffefa; }
+.language-switch button { min-width: 27px; height: 23px; padding: 0 5px; border: 0; border-radius: 5px; background: transparent; color: #898c83; font: 600 9px 'DM Mono',monospace; transition: background .16s var(--ease-out), color .16s var(--ease-out); }
+.language-switch button:hover { color: #3d5742; }
+.language-switch button.language-active { background: #eaf0e8; color: #354c3e; box-shadow: 0 1px 2px #29352c0c; }
+.language-switch button:active { transform: scale(.97); }
+@media (max-width: 760px) { .language-switch { gap: 1px; padding: 2px; }.language-switch button { min-width: 24px; height: 22px; padding: 0 4px; font-size: 8px; } }
