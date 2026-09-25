@@ -91,7 +91,8 @@ describe("VerbaLoop tutor prompt and Groq proxy", () => {
     expect(new Headers(options?.headers).get("authorization")).toBe("Bearer server-only-test-key");
     const requestBody = JSON.parse(String(options?.body));
     expect(requestBody.model).toBe("openai/gpt-oss-20b");
-    expect(requestBody.max_completion_tokens).toBe(180);
+    expect(requestBody.max_completion_tokens).toBe(320);
+    expect(requestBody.reasoning_effort).toBe("low");
     expect(requestBody.stream).toBe(false);
   });
 

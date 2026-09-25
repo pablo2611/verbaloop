@@ -143,7 +143,8 @@ export async function generateTutorReply(
       body: JSON.stringify({
         model: "openai/gpt-oss-20b",
         messages: buildTutorMessages(parsed.data),
-        max_completion_tokens: 180,
+        max_completion_tokens: 320,
+        reasoning_effort: "low",
         temperature: 0.25,
         stream: false,
       }),
