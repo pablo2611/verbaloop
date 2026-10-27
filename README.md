@@ -34,7 +34,7 @@ Glossary entries, language preference, and progress are stored in this browser. 
 
 ### Run locally
 
-For development, use Node.js 22 and pnpm:
+For development, use Node.js 22 and the pnpm version declared in `packageManager` (10.4.1). If Corepack is available, enable it with `corepack enable`; do not use pnpm 11 with this lockfile:
 
 ```bash
 pnpm install
@@ -82,7 +82,7 @@ El glosario, el idioma elegido y el progreso se guardan en este navegador. Pract
 
 ### Ejecución local
 
-Para desarrollo, utiliza Node.js 22 y pnpm:
+Para desarrollo, utiliza Node.js 22 y la versión de pnpm indicada en `packageManager` (10.4.1). Si tienes Corepack, actívalo con `corepack enable`; pnpm 11 no es compatible con este lockfile:
 
 ```bash
 pnpm install

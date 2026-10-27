@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { VerbaGuide } from "@/components/VerbaGuide";
 import { MiniLessonCard } from "@/components/MiniLessonCard";
+import { readStoredProgress, readStoredTerms, initialProgress, type Progress } from "@/lib/localProgress";
 import { dailyChallenges, detectLanguage, matchChoices, sampleTerms, translate, type GlossaryTerm, type Language, type TranslationKey } from "@/lib/i18n";
 import {
   ArrowDownRight, ArrowRight, ArrowUpRight, BookOpen, Check, CheckCircle2, ChevronDown,
@@ -11,26 +12,14 @@ import {
 type Section = "home" | "glossary" | "teams";
 type GameType = "shuffle" | "match" | "fill";
 type Difficulty = "Principiante" | "Intermedio" | "Experto";
-type Progress = { xp: number; streak: number; lastDay: string; solved: number };
-
-const initialProgress: Progress = { xp: 1280, streak: 6, lastDay: "", solved: 12 };
-
 function getStoredProgress(): Progress {
-  try {
-    const stored = localStorage.getItem("verbaloop-progress") || localStorage.getItem("lexiloops-progress");
-    return stored ? { ...initialProgress, ...JSON.parse(stored) } : initialProgress;
-  } catch {
-    return initialProgress;
-  }
+  try { return readStoredProgress(localStorage.getItem("verbaloop-progress"), localStorage.getItem("lexiloops-progress")); }
+  catch { return { ...initialProgress }; }
 }
 
 function getStoredCustomTerms(): GlossaryTerm[] {
-  try {
-    const stored = localStorage.getItem("verbaloop-terms") || localStorage.getItem("lexiloops-terms");
-    return stored ? JSON.parse(stored) as GlossaryTerm[] : [];
-  } catch {
-    return [];
-  }
+  try { return readStoredTerms(localStorage.getItem("verbaloop-terms"), localStorage.getItem("lexiloops-terms")); }
+  catch { return []; }
 }
 
 function normalize(value: string) {
